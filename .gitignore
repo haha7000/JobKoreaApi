@@ -1,0 +1,27 @@
+# 출력 파일
+output/
+*.xlsx
+*.html
+people_summary.json
+
+# 데이터 파일 (템플릿 제외)
+data/*.txt
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# 개인 설정 (쿠키 포함)
+src/config.py
