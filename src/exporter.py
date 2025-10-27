@@ -7,10 +7,10 @@ from openpyxl.styles import Font, Alignment
 class ExcelExporter:
     """엑셀 파일 저장"""
 
-    COLUMNS = ["이름", "나이", "경력", "학력", "지역", "직무", "기술스택", "이력서번호", "이력서링크"]
+    COLUMNS = ["이름", "성별", "나이", "제목", "경력", "학력", "지역", "직무", "기술스택", "이력서번호", "이력서링크"]
     COLUMN_WIDTHS = {
-        'A': 12, 'B': 15, 'C': 12, 'D': 30, 'E': 20,
-        'F': 30, 'G': 50, 'H': 15, 'I': 60
+        'A': 12, 'B': 8, 'C': 15, 'D': 40, 'E': 12,
+        'F': 30, 'G': 20, 'H': 30, 'I': 50, 'J': 15, 'K': 60
     }
 
     def save(self, people: List[Dict[str, str]], filename: str = "백엔드개발자_검색결과.xlsx"):
