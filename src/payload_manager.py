@@ -364,6 +364,7 @@ class PayloadManager:
         self,
         page: int = 1,
         page_size: int = 10,
+        saveno: int = 0,
         job_name: Optional[str] = None,
         areas: Optional[List[str]] = None,
         education: Optional[List[str]] = None,
@@ -377,6 +378,7 @@ class PayloadManager:
         Args:
             page: 페이지 번호
             page_size: 페이지당 결과 수
+            saveno: 검색 세션 ID (1페이지는 0, 2페이지부터 필요)
             job_name: 직무명 (예: "백엔드개발자", "프론트엔드개발자", "데이터엔지니어")
             areas: 지역 리스트 (예: ["서울", "경기"])
             education: 학력 리스트 (예: ["대졸", "대학원"])
@@ -387,6 +389,7 @@ class PayloadManager:
         payload = self._load_template()
         payload["p"] = page
         payload["ps"] = page_size
+        payload["saveno"] = saveno  # 🔥 검색 세션 ID 설정
 
         # 직무 설정
         if job_name:

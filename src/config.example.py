@@ -14,7 +14,6 @@ class JobKoreaConfig:
     PASSWORD = "your_password"  # 잡코리아 비밀번호 입력
 
     # 방법 2: 수동 쿠키 설정 (USE_AUTO_LOGIN=False일 때만 사용)
-    # 브라우저 개발자도구(F12) → Application/저장소 → Cookies에서 복사
     COOKIE_STR = "JSESSIONID=...; JKUID=...; ..."
     # ======================================================
 

@@ -46,15 +46,28 @@ class JobKoreaScraper:
             **search_options: 검색 옵션 (job_name, areas, education)
         """
         all_people = []
+        current_index = 1  # 전체 누적 번호
+        saveno = 0  # 🔥 검색 세션 ID (1페이지는 0, 2페이지부터 필요)
 
         for page in range(start_page, end_page + 1):
-            response = self.api_client.search(page, page_size, **search_options)
+            # saveno 포함하여 검색
+            response = self.api_client.search(page, page_size, saveno=saveno, **search_options)
 
             if "application/json" in response.headers.get("Content-Type", ""):
                 self._save_json(response.json(), page)
             else:
-                people = self._process_html(response.text, page)
+                # 🔥 HTML에서 saveNo 추출 (다음 페이지 요청용)
+                from bs4 import BeautifulSoup
+                soup = BeautifulSoup(response.text, 'html.parser')
+                saveno_elem = soup.select_one('input#saveNo')
+                if saveno_elem and saveno_elem.get('value'):
+                    saveno = int(saveno_elem.get('value'))
+                    print(f"📌 saveNo 추출: {saveno}")
+
+                # 데이터 파싱
+                people = self._process_html(response.text, page, start_index=current_index)
                 all_people.extend(people)
+                current_index += len(people)  # 다음 페이지 시작 번호
 
             if page < end_page:
                 time.sleep(delay)
@@ -68,16 +81,16 @@ class JobKoreaScraper:
             json.dump(data, f, ensure_ascii=False, indent=2)
         print(f"✅ {filepath} 저장 완료")
 
-    def _process_html(self, html: str, page: int) -> List[Dict[str, str]]:
+    def _process_html(self, html: str, page: int, start_index: int = 1) -> List[Dict[str, str]]:
         """HTML 응답 처리 및 저장"""
         # HTML 파일 저장
         html_filepath = self.output_dir / f"result_page{page}.html"
         with open(html_filepath, "w", encoding="utf-8") as f:
             f.write(html)
 
-        # 데이터 파싱
-        people = self.parser.parse_html(html)
-        print(f"✅ {len(people)}명 파싱 완료 (page {page})")
+        # 데이터 파싱 (시작 번호 전달)
+        people = self.parser.parse_html(html, start_index=start_index)
+        print(f"✅ {len(people)}명 파싱 완료 (page {page}, 번호 {start_index}~{start_index+len(people)-1})")
 
         return people
 

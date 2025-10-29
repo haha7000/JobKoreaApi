@@ -1,0 +1,15 @@
+# HTTP 통신
+requests>=2.31.0
+
+# HTML 파싱
+beautifulsoup4>=4.12.0
+
+# 엑셀 처리
+openpyxl>=3.1.0
+pandas>=2.0.0
+
+# 브라우저 자동화 (자기소개서 추출용)
+playwright>=1.40.0
+
+# 타입 힌팅 (Python 3.8 이하에서 필요)
+typing-extensions>=4.8.0

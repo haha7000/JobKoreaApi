@@ -51,12 +51,12 @@ class JobKoreaAPIClient:
         """쿠키 문자열을 딕셔너리로 변환"""
         return dict(x.strip().split("=", 1) for x in cookie_str.split("; ") if "=" in x)
 
-    def search(self, page: int = 1, page_size: int = 10, **kwargs) -> requests.Response:
+    def search(self, page: int = 1, page_size: int = 10, saveno: int = 0, **kwargs) -> requests.Response:
         """인재 검색 API 호출"""
-        payload = self.payload_manager.create_payload(page, page_size, **kwargs)
+        payload = self.payload_manager.create_payload(page, page_size, saveno=saveno, **kwargs)
         data = {"searchCondition": json.dumps(payload, ensure_ascii=False)}
 
-        print(f"[요청] page={page}, ps={page_size}")
+        print(f"[요청] page={page}, ps={page_size}, saveno={saveno}")
         response = self.session.post(self.config.API_URL, data=data)
         print(f"[응답] status={response.status_code}")
 
