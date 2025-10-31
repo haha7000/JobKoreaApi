@@ -15,7 +15,8 @@ def run_single_account(
     end_page: int = 1,
     page_size: int = 100,
     delay: float = 1.0,
-    output_dir: str = "output"
+    output_dir: str = "output",
+    filter_active_within_minutes: int = None
 ) -> bool:
     """
     단일 계정으로 검색 실행
@@ -28,6 +29,7 @@ def run_single_account(
         page_size: 페이지당 크기
         delay: 지연 시간(초)
         output_dir: 출력 디렉토리
+        filter_active_within_minutes: 최근활동 필터링 (분 단위, None이면 필터링 안 함)
 
     Returns:
         성공 여부
@@ -60,7 +62,8 @@ def run_single_account(
     scraper = JobKoreaScraper(
         config=config,
         payload_manager=payload_manager,
-        output_dir=output_dir
+        output_dir=output_dir,
+        filter_active_within_minutes=filter_active_within_minutes
     )
 
     # 4️⃣ 데이터 수집
@@ -86,10 +89,11 @@ def run_single_account(
 def run_all_accounts(
     excel_path: str = "configs/jobkorea_Excel.xlsx",
     start_page: int = 1,
-    end_page: int = 1,
-    page_size: int = 100,
+    end_page: int = 2,
+    page_size: int = 200,
     delay: float = 1.0,
-    output_dir: str = "output"
+    output_dir: str = "output",
+    filter_active_within_minutes: int = None
 ):
     """
     엑셀 파일의 모든 계정을 순차 실행
@@ -101,6 +105,7 @@ def run_all_accounts(
         page_size: 페이지당 크기
         delay: 지연 시간(초)
         output_dir: 출력 디렉토리
+        filter_active_within_minutes: 최근활동 필터링 (분 단위, None이면 필터링 안 함)
     """
     # 엑셀 파일 확인
     if not Path(excel_path).exists():
@@ -141,7 +146,8 @@ def run_all_accounts(
             end_page=end_page,
             page_size=page_size,
             delay=delay,
-            output_dir=output_dir
+            output_dir=output_dir,
+            filter_active_within_minutes=filter_active_within_minutes
         )
 
         if success:
@@ -213,6 +219,9 @@ def main():
 
     OUTPUT_DIR = "output"
 
+    # 🔥 최근활동 필터링 설정 (분 단위)
+    FILTER_ACTIVE_WITHIN_MINUTES = 240  # 30분 이내 활동한 사용자만 추출
+
     # =====================================================
 
     # 모든 계정 자동 실행
@@ -222,7 +231,8 @@ def main():
         end_page=END_PAGE,
         page_size=PAGE_SIZE,
         delay=DELAY,
-        output_dir=OUTPUT_DIR
+        output_dir=OUTPUT_DIR,
+        filter_active_within_minutes=FILTER_ACTIVE_WITHIN_MINUTES
     )
 
 

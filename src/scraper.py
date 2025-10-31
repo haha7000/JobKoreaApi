@@ -2,7 +2,7 @@
 import json
 import time
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 from src.config import JobKoreaConfig
 from src.payload_manager import PayloadManager
@@ -18,11 +18,12 @@ class JobKoreaScraper:
         self,
         config: JobKoreaConfig,
         payload_manager: PayloadManager,
-        output_dir: str = "."
+        output_dir: str = ".",
+        filter_active_within_minutes: Optional[int] = None
     ):
         self.config = config
         self.api_client = JobKoreaAPIClient(config, payload_manager)
-        self.parser = PersonDataParser(config.BASE_URL)
+        self.parser = PersonDataParser(config.BASE_URL, filter_active_within_minutes=filter_active_within_minutes)
         self.exporter = ExcelExporter()
         self.output_dir = Path(output_dir)
 

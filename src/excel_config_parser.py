@@ -1,6 +1,6 @@
 """엑셀 설정 파일 파싱"""
 import pandas as pd
-from typing import Optional, List, Union, Dict
+from typing import Any, Optional, List, Union, Dict
 
 
 class ExcelConfigParser:
@@ -28,12 +28,12 @@ class ExcelConfigParser:
             return None
 
         # 모든 행에서 필터 값들 수집
-        all_job_names = []
-        categories = []
-        all_areas = []
-        all_education = []
-        all_ages = []
-        all_job_status = []
+        all_job_names = [] # 중분류
+        categories = [] # 대분류 <- 이건 필요없는 데이터 일듯
+        all_areas = [] # 지역
+        all_education = []# 학력
+        all_ages = [] # 나이
+        all_job_status = [] # 구직 상태
 
         for idx, row in df.iterrows():
             # 대분류 수집
@@ -82,7 +82,7 @@ class ExcelConfigParser:
             return None
 
         # 중복 제거
-        all_areas = list(set(all_areas)) if all_areas else None
+        all_areas = list[Any](set[Any](all_areas)) if all_areas else None
         all_education = all_education if all_education else None
         all_job_status = all_job_status if all_job_status else None
 

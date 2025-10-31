@@ -37,7 +37,6 @@ class AccountManager:
             # 컬럼명 확인
             if "아이디" not in df.columns or "비밀번호" not in df.columns:
                 print(f"❌ '계정' 시트에 '아이디', '비밀번호' 컬럼이 없습니다.")
-                print(f"   현재 컬럼: {list(df.columns)}")
                 return None
 
             # 아이디로 검색
@@ -123,7 +122,10 @@ class AccountManager:
         all_sheets = self.get_all_sheet_names()
 
         # 2. 고정 시트 제외
-        candidate_sheets = [s for s in all_sheets if s not in excluded_sheets]
+        candidate_sheets = []
+        for s in all_sheets:
+            if s not in excluded_sheets:
+                candidate_sheets.append(s)
 
         # 3. 계정 목록 가져오기
         valid_accounts = self.list_accounts()
